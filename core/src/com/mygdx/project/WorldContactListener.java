@@ -1,6 +1,5 @@
 package com.mygdx.project;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 public class WorldContactListener implements ContactListener {
@@ -30,20 +29,22 @@ public class WorldContactListener implements ContactListener {
             Bullet bullet=(Bullet) secondFi.getUserData();
 
             Player player=(Player) firstFi.getUserData();
-            player.hit(bullet);
-            player.getBody().applyLinearImpulse(bullet.getShootVec().x*30,bullet.getShootVec().y*30,player.getBody().getWorldCenter().x,player.getBody().getWorldCenter().y,true);
-
-            bullet.destroy();
+            if(!player.isShieldActive()){
+                player.hit();
+                player.getBody().applyLinearImpulse(bullet.getShootVec().x*30,bullet.getShootVec().y*30,player.getBody().getWorldCenter().x,player.getBody().getWorldCenter().y,true);
+                bullet.destroy();
+            }
         }
 
         if(isPlayerhit(firstFi,secondFi)){
             Bullet bullet=(Bullet) firstFi.getUserData();
 
             Player player=(Player) secondFi.getUserData();
-            player.hit(bullet);
-            player.getBody().applyLinearImpulse(bullet.getShootVec().x*30,bullet.getShootVec().y*30,player.getBody().getWorldCenter().x,player.getBody().getWorldCenter().y,true);
-
-            bullet.destroy();
+            if(!player.isShieldActive()) {
+                player.hit();
+                player.getBody().applyLinearImpulse(bullet.getShootVec().x*30,bullet.getShootVec().y*30,player.getBody().getWorldCenter().x,player.getBody().getWorldCenter().y,true);
+                bullet.destroy();
+            }
         }
 
 

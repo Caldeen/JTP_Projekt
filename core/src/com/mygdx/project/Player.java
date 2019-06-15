@@ -26,17 +26,18 @@ public class Player {
     private Sprite gun;
     private Body gunBody;
     private float timeStart=0;
+    private float shieldTimeStart=0;
+    private float shieldCooldownTimer=5;
     private String path;
     private Vector2 startPos=new Vector2();
     private int team;
+    private boolean shieldActive=false;
+
 
     public void setHp(int hp) {
         this.hp = hp;
     }
 
-    public String getPath() {
-        return path;
-    }
 
     public Vector2 getStartPos() {
         return startPos;
@@ -120,10 +121,8 @@ public class Player {
 
     }
 
-    public Body getGunBody() {
-        return gunBody;
-    }
 
+    /** wypisuje roznie smieszne rzeczy*/
     public void draw(){
         Vector2 drawStart=new Vector2(body.getWorldCenter().x-radius,body.getWorldCenter().y-radius);
         sprite.setPosition(drawStart.x*project.meter_to_pixels,drawStart.y*project.meter_to_pixels);
@@ -135,7 +134,19 @@ public class Player {
         gun.setPosition(project.meter_to_pixels*(gunBody.getWorldCenter().x-10/18f),
                 project.meter_to_pixels*(gunBody.getWorldCenter().y-3/18f));
         gun.draw(batch);
+
         timeStart+= Gdx.graphics.getRawDeltaTime();
+        if(shieldActive){
+
+            shieldTimeStart+=Gdx.graphics.getRawDeltaTime();
+            if(shieldTimeStart>=3) {
+                shieldActive = false;
+                shieldTimeStart = 0;
+            }
+
+        }else
+            shieldCooldownTimer+=Gdx.graphics.getRawDeltaTime();
+
         hpBar.draw();
     }
     public boolean canFire(){
@@ -149,12 +160,23 @@ public class Player {
         return body;
     }
 
-    public void hit(Bullet bullet){
+    public void hit(){
         hp--;
+    }
+    public void activateShield(){
+        if(!shieldActive&&shieldCooldownTimer>5){
+            shieldActive=true;
+            shieldCooldownTimer=0;
+        }
+
     }
 
     public int getHp() {
         return hp;
+    }
+
+    public boolean isShieldActive() {
+        return shieldActive;
     }
 
     public double getRotation() {
@@ -166,5 +188,8 @@ public class Player {
     }
     public void setRotation(float rotation) {
         this.rotation = rotation;
+    }
+    public Body getGunBody() {
+        return gunBody;
     }
 }

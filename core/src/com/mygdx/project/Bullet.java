@@ -15,7 +15,7 @@ public class Bullet {
     private BodyDef bodyDef = new BodyDef();
     private Batch batch;
     private Body body;
-    private final float projSpeed=3f;
+    private final float projSpeed=2.7f;
     private Player player;
     private Vector2 shootVec;
     private ArrayList<Bullet> bullets;

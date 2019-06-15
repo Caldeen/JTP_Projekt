@@ -3,12 +3,16 @@ package com.mygdx.project;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -27,7 +31,7 @@ public class project extends ApplicationAdapter {
 	LevelBound obstacle1,obstacle2,obstacle3,obstacle4,obstacle5,obstacle6,obstacle7,obstacle8,obstacle9,obstacle10;
 	Vector2 camSize;
 	Player player1, player2;
-	private static final boolean DEBUG = true;
+	private static final boolean DEBUG = false;
 	private Bullet b1;
 	private ArrayList<Bullet> bulletsToDestroy;
 	private ArrayList<Bullet> activeBullets;
@@ -36,12 +40,14 @@ public class project extends ApplicationAdapter {
 	private Vector2 score;
 	private BitmapFont bitmapFont;
 	SpriteBatch batch;
+	ShapeRenderer shapeRenderer;
 	@Override
 	public void create () {
 		bulletsToDestroy=new ArrayList<Bullet>();
 		activeBullets=new ArrayList<Bullet>();
 		camSize=new Vector2(100,100);
 		score=new Vector2();
+		shapeRenderer=new ShapeRenderer();
 
 		batch = new SpriteBatch();
 		debugRenderer= new Box2DDebugRenderer();
@@ -55,7 +61,7 @@ public class project extends ApplicationAdapter {
 		debugCam.setToOrtho(false,100*meter_to_pixels, 100*meter_to_pixels);
 
 		Gdx.graphics.setWindowedMode(900,900);
-
+		shapeRenderer.setProjectionMatrix(debugCam.combined);
 		lvlBound1=new LevelBound(world,batch,4, camSize.y/2f,2, camSize.y/2,true);
 		lvlBound2=new LevelBound(world,batch,camSize.x-4, camSize.y/2f,2, camSize.y/2f,true);
 		lvlBound3=new LevelBound(world,batch,camSize.x/2,camSize.y-4 ,camSize.x/2, 2,false);
@@ -80,6 +86,10 @@ public class project extends ApplicationAdapter {
 
 		bulletTexture=new Texture("bullet.png");
 		bulletSprite=new Sprite(bulletTexture);
+
+
+
+
 	}
 
 	@Override
@@ -95,6 +105,7 @@ public class project extends ApplicationAdapter {
 		debugCam.update();
 
 		batch.setProjectionMatrix(debugCam.combined);
+
 		inputUpdate();
 
 		if(DEBUG) {
@@ -102,6 +113,7 @@ public class project extends ApplicationAdapter {
 			System.out.println("p1 rot: "+player1.getRotation()+"p1 pos: "
 					+ player1.getBody().getWorldCenter().x+" "+player1.getBody().getWorldCenter().y+" "+player2.getHp());
 		}
+
 		batch.begin();
 			player1.draw();
 			player2.draw();
@@ -125,6 +137,21 @@ public class project extends ApplicationAdapter {
 
 			bitmapFont.draw(batch,"Score: Red "+(int)score.x  +"  Green "+(int)score.y,10*meter_to_pixels,99.4f*meter_to_pixels);
 		batch.end();
+		if(player1.isShieldActive()){
+			shapeRenderer.setColor(Color.BLUE);
+			shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+			shapeRenderer.circle((player1.getBody().getWorldCenter().x)*meter_to_pixels,
+					(player1.getBody().getWorldCenter().y)*meter_to_pixels+16, 6);
+			shapeRenderer.end();
+		}
+		if(player2.isShieldActive()){
+			shapeRenderer.setColor(Color.BLUE);
+			shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+			shapeRenderer.circle((player2.getBody().getWorldCenter().x)*meter_to_pixels,
+					(player2.getBody().getWorldCenter().y)*meter_to_pixels+16, 6);
+			shapeRenderer.end();
+		}
+
 
 	}
 	private void playerUpdate(Player player){
@@ -143,6 +170,7 @@ public class project extends ApplicationAdapter {
 	private  void inputUpdate(){
 		Vector3 moveDirection=new Vector3(0,0,0);
 		Vector3 moveDirection2 =new Vector3(0,0,0);
+
 		if(Gdx.input.isKeyPressed(Input.Keys.W)){
 			moveDirection.y=1;
 		}
@@ -180,6 +208,12 @@ public class project extends ApplicationAdapter {
 		if(Gdx.input.isKeyPressed(Input.Keys.P)){
 			moveDirection2.z=1;
 		}
+		if(Gdx.input.isKeyPressed(Input.Keys.R)){
+			player1.activateShield();
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)){
+			player2.activateShield();
+		}
 		if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
 			if(player1.canFire())
 				b1=new Bullet(world,batch,player1,bulletsToDestroy,activeBullets,bulletSprite);
@@ -212,7 +246,6 @@ public class project extends ApplicationAdapter {
 		player2.dispose();
 		player1.dispose();
 		bulletTexture.dispose();
-
 
 	}
 }
