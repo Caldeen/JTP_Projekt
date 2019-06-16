@@ -112,7 +112,8 @@ public class Player {
         revoluteJointDef.enableMotor = true;
         world.createJoint(revoluteJointDef);
     }
-    /**Przesuwa ciało gracza w stronę wektora oraz rotuje je */
+    /**Przesuwa ciało gracza w stronę wektora oraz rotuje je
+     * @param moveDir pierwsze 2 wartości- kierunek; 3cia- rotacja */
     public void move(Vector3 moveDir){
         body.setLinearVelocity(moveDir.x*runSpeed,moveDir.y*runSpeed);
         if(moveDir.z!=0){
