@@ -15,7 +15,7 @@ public class LevelBound {
     private BodyDef bodyDef = new BodyDef();
     private Batch batch;
     private Body groundBody;
-    private Texture text=new Texture("5x5_square.png");
+    private Texture text=new Texture("core/assets/5x5_square.png");
     private Sprite sprite=new Sprite(text);
     private Vector2 rectHalfSize=new Vector2();
     private boolean vertical;

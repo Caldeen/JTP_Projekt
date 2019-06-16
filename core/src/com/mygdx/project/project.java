@@ -81,17 +81,17 @@ public class project extends ApplicationAdapter {
 		obstacle9=new LevelBound(world,batch,23,73,2,4,true);
 		obstacle10=new LevelBound(world,batch,27,73,2,4,true);
 
-		player1=new Player(world,batch,20,20,2,"player1Circle.png",0);
-		player2=new Player(world,batch,camSize.x-20,camSize.y-20,2,"player2Circle.png",1);
+		player1=new Player(world,batch,20,20,2,"core/assets/player1Circle.png",0);
+		player2=new Player(world,batch,camSize.x-20,camSize.y-20,2,"core/assets/player2Circle.png",1);
 
-		bulletTexture=new Texture("bullet.png");
+		bulletTexture=new Texture("core/assets/bullet.png");
 		bulletSprite=new Sprite(bulletTexture);
 
 
 
 
 	}
-
+	/**Metoda wywoływana raz na klatkę*/
 	@Override
 	public void render () {
 		Gdx.gl.glClearColor((float)172/255, (float)168/255, (float)165/255, 1);
@@ -154,6 +154,7 @@ public class project extends ApplicationAdapter {
 
 
 	}
+	/**Decyduje o zmianie stanu graczy */
 	private void playerUpdate(Player player){
 		if(player.getHp()==0){
 			if(player.getTeam()==0)
@@ -167,6 +168,7 @@ public class project extends ApplicationAdapter {
 		}
 
 	}
+	/**Obsługa klawiatury*/
 	private  void inputUpdate(){
 		Vector3 moveDirection=new Vector3(0,0,0);
 		Vector3 moveDirection2 =new Vector3(0,0,0);
@@ -227,6 +229,7 @@ public class project extends ApplicationAdapter {
 		player1.move(moveDirection);
 		player2.move(moveDirection2);
 	}
+	/**Usuwanie pocisków ze świata */
 	private void bulletsUpdate(){
 		for(Bullet b:bulletsToDestroy ){
 			world.destroyBody(b.getBody());

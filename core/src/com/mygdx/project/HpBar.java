@@ -9,8 +9,8 @@ import com.badlogic.gdx.math.Vector2;
 public class HpBar {
     private Player player;
     private Batch batch;
-    private Texture texture=new Texture("noHp.png");
-    private Texture hptext=new Texture("fulhp.png");
+    private Texture texture=new Texture("core/assets/noHp.png");
+    private Texture hptext=new Texture("core/assets/fulhp.png");
     private Sprite sprite=new Sprite(hptext);
 
     public HpBar(Player player,  Batch batch) {
@@ -33,7 +33,6 @@ public class HpBar {
                 sprite.setPosition(startPos.x,startPos.y);
                 sprite.draw(batch);
                 validator++;
-
             }
         }
     }

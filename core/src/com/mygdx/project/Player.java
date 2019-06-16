@@ -21,7 +21,7 @@ public class Player {
     private final float runSpeed =13;
     private int hp;
     private Texture text;
-    private Texture gunT=new Texture("gun.png");
+    private Texture gunT=new Texture("core/assets/gun.png");
     private Sprite sprite;
     private Sprite gun;
     private Body gunBody;
