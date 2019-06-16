@@ -28,6 +28,7 @@ public class LevelBound {
         rectHalfSize.x=halfWidth;
         rectHalfSize.y=halfHeight;
     }
+    /**Tworzy ciało w fizycznym świecie box2d*/
     private void levelBoundInit (float posX,float posY,float halfWidth,float    halfHeight){
         bodyDef.position.set(posX,posY);
         groundBody = world.createBody(bodyDef);

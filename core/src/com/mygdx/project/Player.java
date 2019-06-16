@@ -64,7 +64,7 @@ public class Player {
         hpBar=new HpBar(this,batch);
     }
 
-
+    /**Tworzy ciało w fizycznym świecie box2d, stałe własności gracza*/
     private void createPlayerBody(float posX,float posY,float radius){
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(posX,posY);
@@ -82,6 +82,7 @@ public class Player {
         circle.dispose();
         body.setAwake(true);
     }
+    /**Tworzy ciało broni w świecie fizycznym box2d */
     private void createGunBody(){
         Vector2 gunVector=new Vector2();
         gunVector.y= 2* MathUtils.sin(body.getTransform().getRotation());
@@ -102,6 +103,7 @@ public class Player {
         gunShape.dispose();
         createJoint();
     }
+    /**Tworzy połączenie między ciałem gracza,a broni  */
     private void createJoint(){
         RevoluteJointDef revoluteJointDef=new RevoluteJointDef();
         revoluteJointDef.initialize(body,gunBody,new Vector2(body.getWorldCenter().x+2,body.getWorldCenter().y));
@@ -110,7 +112,7 @@ public class Player {
         revoluteJointDef.enableMotor = true;
         world.createJoint(revoluteJointDef);
     }
-
+    /**Przesuwa ciało gracza w stronę wektora oraz rotuje je */
     public void move(Vector3 moveDir){
         body.setLinearVelocity(moveDir.x*runSpeed,moveDir.y*runSpeed);
         if(moveDir.z!=0){
@@ -122,7 +124,7 @@ public class Player {
     }
 
 
-    /** wypisuje roznie smieszne rzeczy*/
+    /**Rysowanie gracza, broni i obsługa tarczy*/
     public void draw(){
         Vector2 drawStart=new Vector2(body.getWorldCenter().x-radius,body.getWorldCenter().y-radius);
         sprite.setPosition(drawStart.x*project.meter_to_pixels,drawStart.y*project.meter_to_pixels);
@@ -163,6 +165,7 @@ public class Player {
     public void hit(){
         hp--;
     }
+    /**Aktywacja tarczy */
     public void activateShield(){
         if(!shieldActive&&shieldCooldownTimer>5){
             shieldActive=true;

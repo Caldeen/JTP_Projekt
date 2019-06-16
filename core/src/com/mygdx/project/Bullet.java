@@ -38,6 +38,7 @@ public class Bullet {
         createBullet();
         shootBullet();
     }
+    /**Tworzy ciało w fizycznym świecie box2d, stałe własności pocisku*/
     private void createBullet(){
         shootVec=new Vector2();
         shootVec.y= 2*MathUtils.sin(player.getBody().getTransform().getRotation());
@@ -59,7 +60,7 @@ public class Bullet {
         circle.dispose();
 
     }
-
+    /**Wstrzeliwuje pocisk na podstawie pozycji i rotacji gracza */
     private void shootBullet(){
         int variance=rand.nextInt(2);
         float dispersion=rand.nextFloat()%dispersionMax;
